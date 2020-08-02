@@ -1,5 +1,5 @@
 const MoviesHelper = require("../../Movies/utils/helpers")
-const { getCode, getName } = require('country-list');
+
 
 /*PART 1 comments */
 /**
@@ -23,8 +23,25 @@ const findCommentsByMovie = async (movieId, limit = 30) => {
   }
 
   let commentsForTheMovie = await allCommentsQuery(movieId).find();
+  let listComments = [];
 
-  return commentsForTheMovie === undefined ? [] : commentsForTheMovie;
+  for(var x in commentsForTheMovie)
+  {  
+    let row = commentsForTheMovie[x];
+     
+    listComments.push({
+      'name': row.get('name'),
+      'email': row.get('email'),
+      'date': row.get('date') ,
+      'movie': row.get('movie'),
+     
+    });
+    
+    
+    
+  }
+
+  return listComments === undefined ? [] : listComments;
 };
 
 /**Flitering by movieId */
@@ -36,6 +53,7 @@ const allCommentsQuery = (movieId, limit) => {
     let searchedMovie = new Parse.Object("Movies");
     searchedMovie.id = movieId;
     commentsQuery.equalTo("movie", searchedMovie);
+    commentsQuery.select("name","email","date","movie.title","movie.plot","movie.num_mflix_comments","movie.year","movie.countries","movie.rated","movie.released","movie.cast");
   }
 
   if (limit !== undefined) {
@@ -54,19 +72,7 @@ const allCommentsQuery = (movieId, limit) => {
  */
 
 
-const findMovieByYear = async (year, country ) => {
-  /**
-   * setting up...
-   * if the user use country code or the first lettre is lower case
-   */
-  if(country.length < 3){
-    var fullname = getName(country);
-    country = fullname
-  }
-  else if(country !== "USA") {
-    var code = getCode(country);
-    country = getName(code);  
-  }
+const findMovieByYear = async (year, country = "") => {
   
   if (year === undefined) {
     throw "Year params must be set";
@@ -79,20 +85,44 @@ const findMovieByYear = async (year, country ) => {
   if(countryRow === 0){
     throw "Wrong country ! "
   }
-
-  let YearForTheMovie = await allMoviesQuery(year,country).find();
   let rowYC = await allMoviesQuery(year,country).count();
   if(rowYC === 0){
     throw "there is no movie before " + year + " in " + country   
   }
-  return YearForTheMovie === undefined ? [] : YearForTheMovie;
+  let YearForTheMovie = await allMoviesQuery(year,country).find();
+  
+  
+  let listMovies = [];
+
+  for(var x in YearForTheMovie)
+  {  
+    let row = YearForTheMovie[x];
+
+
+    listMovies.push({
+      'title': row.get('title'),
+      'plot': row.get('plot'),
+      'comments': row.get('num_mflix_comments') !== undefined ? row.get('num_mflix_comments') : 0,
+      'year': row.get('year'),
+      'country': row.get('country'),
+      'rated': row.get('rated'),
+      'released_date': row.get('released_date'),
+      'cast': row.get('cast')
+    });
+    
+    
+    
+  }
+  return listMovies === undefined ? [] : listMovies;
 };
 
 /**Flitering by year and country*/
 const allMoviesQuery = (year, country) => {
   let MovieQuery = new Parse.Query("Movies");
-
-  if (year !== undefined) {
+  if(country.length === 0){
+  MovieQuery.lessThan("year", year);
+  }
+  if (year !== undefined && country.length !== 0) {
 
      MovieQuery.lessThan("year", year);
      MovieQuery.startsWith("countries", country);
