@@ -55,12 +55,7 @@ const allCommentsQuery = (movieId, limit) => {
 
   return commentsQuery;
 };
-const findMovieById =  (movieId) =>{
-  let query = new Parse.Query("Movies");
-  query.equalTo("objectId", movieId);
-  
-  return query;
-};
+
 
 const findMovieYear =  (year) =>{
   let query = new Parse.Query("Movies");
@@ -75,4 +70,4 @@ const findMovieCountry =  (country) =>{
   return query;
 };
 
-module.exports = exports = { migrateCountCommentsByMovie , findMovieById,findMovieYear,findMovieCountry };
+module.exports = exports = { migrateCountCommentsByMovie , migrateCountCommentsByMovie,findMovieYear,findMovieCountry };
