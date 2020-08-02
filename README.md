@@ -4,11 +4,10 @@
 
 ## Responsables
 
-* [Whoomies-CTO](mailto:pierre.houguet@whoomies.com ) - Celine DUGUET LOSCOS
-
+* [Whoomies-CTO](mailto:pierre.houguet@whoomies.com ) - Pierre HOUGUET
 &emsp;
 
 ## Auteurs
 
-* **Mehdi KHENISSI** - [Dev](mailto:khenissimehdi0123@gmail.com)
+* **Mehdi KHENISSI** - [Developper](mailto:khenissimehdi0123@gmail.com)
 
