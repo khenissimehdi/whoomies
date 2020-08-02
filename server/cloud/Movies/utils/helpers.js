@@ -44,4 +44,17 @@ const findMovieById =  (movieId) =>{
   return query;
 };
 
-module.exports = exports = { migrateCountCommentsByMovie , findMovieById };
+const findMovieYear =  (year) =>{
+  let query = new Parse.Query("Movies");
+  query.lessThan("year", year);
+  
+  return query;
+};
+const findMovieCountry =  (country) =>{
+  let query = new Parse.Query("Movies");
+  query.startsWith("countries", country);
+  
+  return query;
+};
+
+module.exports = exports = { migrateCountCommentsByMovie , findMovieById,findMovieYear,findMovieCountry };
