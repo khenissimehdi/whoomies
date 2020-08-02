@@ -105,7 +105,7 @@ const findMovieByYear = async (year, country = "") => {
       'comments': row.get('num_mflix_comments') !== undefined ? row.get('num_mflix_comments') : 0,
       'year': row.get('year'),
       'country': row.get('country'),
-      'rated': row.get('rated'),
+      'rated': row.get('rated') !== undefined ? row.get('rated') : "no rate",
       'released_date': row.get('released_date'),
       'cast': row.get('cast')
     });

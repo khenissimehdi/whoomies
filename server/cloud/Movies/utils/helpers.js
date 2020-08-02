@@ -20,12 +20,14 @@ const migrateCountCommentsByMovie = async () => {
       query: allMoviesQuery(),
       useMasterKey: true,
       processingFunction: async (movie) => {
-        console.log("GOT THE MOVIE");
-
+        
+        let Id = movie.id;
+        
         //Count movie comments 
-
+        let movieRow =  await allCommentsQuery(Id,30).count();
+        console.log("done setting comments number");
         //Set movie comments number
-        movie.set("num_mflix_comments", 3);
+        movie.set("num_mflix_comments", movieRow);
 
         return movie.save();
       },
@@ -37,6 +39,22 @@ const migrateCountCommentsByMovie = async () => {
 
 };
 
+const allCommentsQuery = (movieId, limit) => {
+  let commentsQuery = new Parse.Query("Comments");
+  commentsQuery.include(["movie"]);
+
+  if (movieId !== undefined) {
+    let searchedMovie = new Parse.Object("Movies");
+    searchedMovie.id = movieId;
+    commentsQuery.equalTo("movie", searchedMovie);
+  }
+
+  if (limit !== undefined) {
+    commentsQuery.limit(limit);
+  }
+
+  return commentsQuery;
+};
 const findMovieById =  (movieId) =>{
   let query = new Parse.Query("Movies");
   query.equalTo("objectId", movieId);
