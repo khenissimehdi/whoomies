@@ -1,0 +1,1 @@
+Parse.Cloud.job("Comments Number Fix", require("./linkToComments"));
