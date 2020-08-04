@@ -133,4 +133,20 @@ const allMoviesQuery = (year, country) => {
 
   return MovieQuery;
 };
-module.exports = exports = { findCommentsByMovie,findMovieByYear };
+/**
+ * Bonus add comments
+ */
+const addComment = async (name,email,movie) =>{
+  const Comments = Parse.Object.extend("Comments");
+  const comment = new Comments();
+  var date = Date(); 
+  Sdate = date.toString()  
+  comment.set("name", name);
+  comment.set("email", email);
+  comment.set("movie", movie);
+  comment.set("date", Sdate);
+
+  comment.save()
+}
+
+module.exports = exports = { findCommentsByMovie,findMovieByYear,addComment };
